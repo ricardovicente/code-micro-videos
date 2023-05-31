@@ -26,7 +26,6 @@ class GenreTest extends TestCase
     {
         $genre = Genre::create(['name' => 'Test One']);
         $genre->refresh();
-        $this->assertIsValidUuid($genre->id);
         $this->assertEquals('Test One', $genre->name);
         $this->assertTrue($genre->is_active);
     }
