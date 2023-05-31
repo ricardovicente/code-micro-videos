@@ -219,7 +219,7 @@ class GenreControllerTest extends TestCase
 
         $response->assertStatus(204);
         $this->assertNull(Genre::find($genre->id));
-        $this->assertCount(1, $genre->withTrashed()->get());
+        $this->assertNotNull(Genre::withTrashed()->find($genre->id));
     }
 
     public function testOnDeleteWithRestore()
