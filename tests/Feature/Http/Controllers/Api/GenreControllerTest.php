@@ -207,4 +207,34 @@ class GenreControllerTest extends TestCase
                 'is_active' => true
             ]);
     }
+
+    public function testOnDelete()
+    {
+        $genre = factory(Genre::class)->create();
+
+        $response = $this->json(
+            'DELETE',
+            route('genres.destroy', ['genre' => $genre->id])
+        );
+
+        $response->assertStatus(204);
+        $this->assertNull(Genre::find($genre->id));
+        $this->assertCount(1, $genre->withTrashed()->get());
+    }
+
+    public function testOnDeleteWithRestore()
+    {
+        $genre = factory(Genre::class)->create();
+
+        $response = $this->json(
+            'DELETE',
+            route('genres.destroy', ['genre' => $genre->id])
+        );
+
+        $response->assertStatus(204);
+
+        $genre->restore();
+
+        $this->assertNotNull(Genre::find($genre->id));
+    }
 }
